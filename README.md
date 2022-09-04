@@ -1,15 +1,14 @@
 <h1>Exploration of a Potential Relationship between N200 Peak-Latency and Visual Encoding Time</h1>
 <h2>N200 Identification</h2>
-<h2></h2>
 
 <h1>Task Description</h1>
-<h2>Dataset 1.</h2>
+<h2>Dataset 1</h2>
 Participants performed a version of a two-back continuous performance task that included rewards and
 punishments, themselves communicated via auditory feedback tones. The participants were presented with a
 succession of letters on a screen and had to determine with button presses whether any given letter was the same as
 the one presented two occurrences earlier.
 
-<h2>Dataset 2.</h2>
+<h2>Dataset 2</h2>
 Participants were presented with Gabor patches that were embedded in visual noise and varied in
 orientations and spatial frequencies. The experiment consisted of two tasks, each containing three different block types
 of increasing difficulty.
@@ -37,7 +36,7 @@ one of two buttons. As an example, one button corresponded to patches with both 
 orientation of 135 degrees
 
 
-<h2>Dataset 3.</h2>
+<h2>Dataset 3</h2>
 Participants performed a random dot motion task where the goal, in each trial, was to determine
 whether an array of moving dots is shifting to the left or to the right of the screen. The array contains two types of dots,
 together forming a borderless circle. In one type, each dot is independently moving in pseudo-random directions while,
@@ -48,7 +47,8 @@ and visual feedback was given after every response.
 
 <h1>Additional Figures</h1>
 <h2>Dataset 1</h2>
-![Dataset 1 - Regression Plot](/Supplementary Data/Figures/Outliers Excluded/dataset 1.png)
+![Dataset 1 - Regression Plot](/Supplementary_Data/Figures/Outliers_Excluded/dataset1.png)
+<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset1.png" alt="Dataset1 - Regression" title="Dataset 1 - Regression Plot">
 
 <h2>Dataset 2</h2>
 ![Dataset 2 (easy condition) - Regression Plot ](/Supplementary Data/Figures/Outliers Excluded/dataset 2 (Easy).png)
