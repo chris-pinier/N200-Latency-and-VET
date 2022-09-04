@@ -1,69 +1,126 @@
 <h1>Exploration of a Potential Relationship between N200 Peak-Latency and Visual Encoding Time</h1>
 <h2>N200 Identification</h2>
 
-<h1>Task Description</h1>
-<h2>Dataset 1</h2>
-Participants performed a version of a two-back continuous performance task that included rewards and
-punishments, themselves communicated via auditory feedback tones. The participants were presented with a
-succession of letters on a screen and had to determine with button presses whether any given letter was the same as
-the one presented two occurrences earlier.
-
-<h2>Dataset 2</h2>
-Participants were presented with Gabor patches that were embedded in visual noise and varied in
-orientations and spatial frequencies. The experiment consisted of two tasks, each containing three different block types
-of increasing difficulty.
-In the first one, the so-called “Signal task”, the goal was to classify Gabor patches into two categories of either low or
-high spatial frequencies. The patches were presented with an orientation of either 45 or 135 degrees and the difficulty
-was increased between the three block types by lowering the discrepancy in spatial frequency between the two
-categories:
-
-- Easy: low frequency patches were shown at 2.35 cycles per degree (cpd), and high frequency patches at 2.65 cpd
-(0.3 cpd difference).
-- Medium: low frequency patches were shown at 2.4 cpd and high frequency patches at 2.6 cpd (0.2 cpd
-difference).
-- Hard: low spatial frequency patches were shown at 2.45 cpd and high spatial frequency patches at 2.55 cpd (0.1
-cpd difference).  
-
-The goal of the second task (Signal-Response (SR) Mapping) depended on the difficulty of the block. Gabor patches were
-once again presented with an orientation of either 45 or 135 degrees, but this time the spatial frequency was kept
-constant for the two categories across block types, with low and high frequency patches shown at 2.4 cpd and 2.6 cpd,
-respectively. The goal of the task varied as follows:
-- Easy: participants were asked to respond by pressing a single button whenever they detected any Gabor patch.
-- Medium: participants had to discriminate low and high frequency patches by pressing one of two buttons.
-- Hard: participants had to discriminate the patches based on both spatial frequency and orientation by pressing
-one of two buttons. As an example, one button corresponded to patches with both high spatial frequency and a
-45-degree orientation, while the other corresponded to patches with both low spatial frequency and an
-orientation of 135 degrees
-
-
-<h2>Dataset 3</h2>
-Participants performed a random dot motion task where the goal, in each trial, was to determine
-whether an array of moving dots is shifting to the left or to the right of the screen. The array contains two types of dots,
-together forming a borderless circle. In one type, each dot is independently moving in pseudo-random directions while,
-in the other, the dots are collectively moving either toward the left or the right. The task included two different
-conditions: accuracy trials, in which the participants were asked to respond as accurately as they could, and speed trials,
-in which they were asked to respond as quickly as they could. The array of dots was shown for 1.5 second on each trial
-and visual feedback was given after every response.
-
-<h1>Additional Figures</h1>
-<h2>Dataset 1</h2>
-<h3>Dataset 1 - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset1.png" alt="Dataset1 - Regression" title="Dataset 1 - Regression Plot">
-
-<h2>Dataset 2</h2>
-<h3>Dataset 2 (easy) - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Easy).png" alt="Dataset2 (easy condition) - Regression" title="Dataset 2 (easy) - Regression Plot">
-
-<h3>Dataset 2 (medium) - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Medium).png" alt="Dataset2 (medium condition) - Regression" title="Dataset 2 (medium)- Regression Plot">
-
-<h3>Dataset 2 (hard) - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Hard).png" alt="Dataset2 (hard condition) - Regression" title="Dataset 2 (hard) - Regression Plot">
+<details>
+  <summary>Data Preprocessing</summary>
+  The EEG activity was processed with MNE, an open-source python package dedicated to the analysis of
+  neurophysiological data. Raw data was obtained for the first and third dataset, while the data used from the second one
+  had already been preprocessed.
+  
+  Preprocessing of the raw EEG data for dataset 1 and 3 was performed in the following order:
+  1. Average reference applied to all the electrodes 
+  2. Bandpass filter (0.1-100 Hz)
+  3. Artifact removal using Independent Component analysis (ICA)
+  ICA was applied to dataset 1 and 3 to remove eye movement artifacts. EOG electrodes from the third dataset
+  were used to this end, but had to be simulated from EEG data in the first dataset. This was done through the
+  MNE package, by creating a bipolar reference from two frontal EEG electrodes and using it as a proxy for an EOG
+  electrode. Electrode “1EX4” was used as the anode and “1EX5” as the cathode.
+  4. Bandpass filter (1-10 Hz)
+  5. Epoching
+  Epochs were time-locked on stimulus presentation, starting 200 ms before stimulus-onset and with a total
+  duration of 500 ms.
+  6. Baseline correction
+  Baseline correction was applied to each epoch using the 200 ms period before stimulus-onset.
+  7. Linear detrend
+  8. Epochs and electrodes rejection
+  Any epoch containing more than 30% of its electrodes showing absolute amplitudes greater than 100 μV were
+  automatically rejected. Any electrode showing absolute amplitudes greater than 100 μV in more than 20 epochs
+  were automatically rejected from every epoch.
+  9. Generating the ERP
+  Stimulus-locked ERP were generated by averaging the EEG activity across the selected epochs.
+  10. Singular value decomposition (SVD)
+  SVD was applied to the data using Python’s Numpy library. The resulting U (Timepoints x Components) and V
+  (Components x Electrodes) matrices, were respectively used to identify the waveform and spatial distribution of
+  the N200 in the ERP of each participant.
+  11. Template matching
+  The waveform template was reframed and resampled to match the specified N200’s time window – here, 125 to
+  275ms post-stimulus – and the sampling rate used in each dataset. The topographic template was converted
+  into a grayscale image (1280 x 1280 pixels) and vectorized. Both the waveform and topographic templates were
+  derived from Nunez et al., (2019). Similarly to the topographic template, topographic maps (1280 x 1280 pixels)
+  of the components from the V matrix were converted into a vector of grayscale values.
+  For each participant, the first 10 components of the U and V matrices were correlated (Pearson's r) with the
+  waveform and topographic templates, respectively. The product of the two correlation coefficients was then 
+  calculated for each component, and the component with the highest product was designated as reflective of a
+  participant’s N200.
+  12. Estimation of NDT
+  For each participant, the 10th percentile of RT was used as an estimate of NDT, as suggested by Nunez et al.
+  (2019).
+  13. Linear regression analysis
+  A linear regression analysis wasperformed using the open-source python module statsmodels. The analysis was first 
+  conducted on each dataset independently and then on a merged version of the three datasets
+</details>
 
 
-<h2>Dataset 3</h2>
-<h3>Dataset 3 - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
+<h2>Task Description</h2>
+
+<details>
+  <summary>Dataset 1</summary>
+  Participants performed a version of a two-back continuous performance task that included rewards and
+  punishments, themselves communicated via auditory feedback tones. The participants were presented with a
+  succession of letters on a screen and had to determine with button presses whether any given letter was the same as
+  the one presented two occurrences earlier.
+</details>
+
+<details>
+  <summary>Dataset 2</summary>
+  Participants were presented with Gabor patches that were embedded in visual noise and varied in
+  orientations and spatial frequencies. The experiment consisted of two tasks, each containing three different block types
+  of increasing difficulty.
+  In the first one, the so-called “Signal task”, the goal was to classify Gabor patches into two categories of either low or
+  high spatial frequencies. The patches were presented with an orientation of either 45 or 135 degrees and the difficulty
+  was increased between the three block types by lowering the discrepancy in spatial frequency between the two
+  categories:
+
+  - Easy: low frequency patches were shown at 2.35 cycles per degree (cpd), and high frequency patches at 2.65 cpd
+  (0.3 cpd difference).
+  - Medium: low frequency patches were shown at 2.4 cpd and high frequency patches at 2.6 cpd (0.2 cpd
+  difference).
+  - Hard: low spatial frequency patches were shown at 2.45 cpd and high spatial frequency patches at 2.55 cpd (0.1
+  cpd difference).  
+
+  The goal of the second task (Signal-Response (SR) Mapping) depended on the difficulty of the block. Gabor patches were
+  once again presented with an orientation of either 45 or 135 degrees, but this time the spatial frequency was kept
+  constant for the two categories across block types, with low and high frequency patches shown at 2.4 cpd and 2.6 cpd,
+  respectively. The goal of the task varied as follows:
+  - Easy: participants were asked to respond by pressing a single button whenever they detected any Gabor patch.
+  - Medium: participants had to discriminate low and high frequency patches by pressing one of two buttons.
+  - Hard: participants had to discriminate the patches based on both spatial frequency and orientation by pressing
+  one of two buttons. As an example, one button corresponded to patches with both high spatial frequency and a
+  45-degree orientation, while the other corresponded to patches with both low spatial frequency and an
+  orientation of 135 degrees.
+</details>
+
+<details>
+  <summary>Dataset 3</summary>
+  Participants performed a random dot motion task where the goal, in each trial, was to determine
+  whether an array of moving dots is shifting to the left or to the right of the screen. The array contains two types of dots,
+  together forming a borderless circle. In one type, each dot is independently moving in pseudo-random directions while,
+  in the other, the dots are collectively moving either toward the left or the right. The task included two different
+  conditions: accuracy trials, in which the participants were asked to respond as accurately as they could, and speed trials,
+  in which they were asked to respond as quickly as they could. The array of dots was shown for 1.5 second on each trial
+  and visual feedback was given after every response.  
+</details>
+
+
+<h2>Additional Figures</h2>
+<details>
+  <summary>Dataset 1</summary>
+  <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset1.png" alt="Dataset1 - Regression" title="Dataset 1 - Regression Plot">  
+</details>
+
+
+<details>
+  <summary>Dataset 2</summary>
+  <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Easy).png" alt="Dataset2 (easy condition) - Regression" title="Dataset 2 (easy) - Regression Plot">
+  <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Medium).png" alt="Dataset2 (medium condition) - Regression" title="Dataset 2 (medium)- Regression Plot">
+  <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Hard).png" alt="Dataset2 (hard condition) - Regression" title="Dataset 2 (hard) - Regression Plot">
+</details>
+
+<details>
+  <summary>Dataset 3</summary>
+  <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
+</details>
+
 
 
 <h1>Dataset / Participants Information</h1>
