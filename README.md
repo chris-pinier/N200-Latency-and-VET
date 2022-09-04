@@ -3,7 +3,7 @@
   <img src="/Supplementary_Data/Datasets_summary.png" alt="Datasets information" title="Datasets information">
 <h2>N200 Identification</h2>
 <details>
-  <summary>Data Preprocessing</summary>
+  <summary>Preprocessing Steps & N200 Identification</summary>
   The EEG activity was processed with MNE, an open-source python package dedicated to the analysis of
   neurophysiological data. Raw data was obtained for the first and third dataset, while the data used from the second one
   had already been preprocessed.
