@@ -52,18 +52,18 @@ and visual feedback was given after every response.
 
 <h2>Dataset 2</h2>
 <h3>Dataset 2 (easy) - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2(Easy).png" alt="Dataset2 (easy condition) - Regression" title="Dataset 2 (easy) - Regression Plot">
+<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Easy).png" alt="Dataset2 (easy condition) - Regression" title="Dataset 2 (easy) - Regression Plot">
 
 <h3>Dataset 2 (medium) - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2(Medium).png" alt="Dataset2 (medium condition) - Regression" title="Dataset 2 (medium)- Regression Plot">
+<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Medium).png" alt="Dataset2 (medium condition) - Regression" title="Dataset 2 (medium)- Regression Plot">
 
 <h3>Dataset 2 (hard) - Regression Plot</h3>
-<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2(Hard).png" alt="Dataset2 (hard condition) - Regression" title="Dataset 2 (hard) - Regression Plot">
+<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Hard).png" alt="Dataset2 (hard condition) - Regression" title="Dataset 2 (hard) - Regression Plot">
 
 
 <h2>Dataset 3</h2>
 <h3>Dataset 3 - Regression Plot</h3>
-<img src="/Supplementary Data/Figures/Outliers Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
+<img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
 
 
 <h1>Dataset / Participants Information</h1>
