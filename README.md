@@ -1,6 +1,7 @@
 <h1>Exploration of a Potential Relationship between N200 Peak-Latency and Visual Encoding Time</h1>
+<h2>Datasets Information</h2>
+  <img src="/Supplementary_Data/Datasets_summary.png" alt="Datasets information" title="Datasets information">
 <h2>N200 Identification</h2>
-
 <details>
   <summary>Data Preprocessing</summary>
   The EEG activity was processed with MNE, an open-source python package dedicated to the analysis of
@@ -120,11 +121,3 @@
   <summary>Dataset 3</summary>
   <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
 </details>
-
-
-
-<h1>Dataset / Participants Information</h1>
-<h2>Dataset 1</h2>
-<h2>Dataset 2</h2>
-<h2>Dataset 3</h2>
-
