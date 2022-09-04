@@ -4,13 +4,13 @@
 
 <h1>Task Description</h1>
 <h2>Dataset 1.</h2>
-The participants performed a version of a two-back continuous performance task that included rewards and
+Participants performed a version of a two-back continuous performance task that included rewards and
 punishments, themselves communicated via auditory feedback tones. The participants were presented with a
 succession of letters on a screen and had to determine with button presses whether any given letter was the same as
 the one presented two occurrences earlier.
 
 <h2>Dataset 2.</h2>
-In the second dataset, participants were presented with Gabor patches that were embedded in visual noise and varied in
+Participants were presented with Gabor patches that were embedded in visual noise and varied in
 orientations and spatial frequencies. The experiment consisted of two tasks, each containing three different block types
 of increasing difficulty.
 In the first one, the so-called “Signal task”, the goal was to classify Gabor patches into two categories of either low or
@@ -38,7 +38,7 @@ orientation of 135 degrees
 
 
 <h2>Dataset 3.</h2>
-Participants from the third dataset performed a random dot motion task where the goal, in each trial, was to determine
+Participants performed a random dot motion task where the goal, in each trial, was to determine
 whether an array of moving dots is shifting to the left or to the right of the screen. The array contains two types of dots,
 together forming a borderless circle. In one type, each dot is independently moving in pseudo-random directions while,
 in the other, the dots are collectively moving either toward the left or the right. The task included two different
