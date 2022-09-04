@@ -81,7 +81,7 @@ dir_figs = base/f'{proj_n}.2-Figures'
 dir_figs_montage = dir_figs/'montage'
 
 dir_pickle = base/f'{proj_n}.3-Pickle_Files'
-dir_ICA = base/f'{proj_n}.4-Fitted_ICAs' # ! Remove if using already fitted ica files
+dir_ICA = base/f'{proj_n}.4-Fitted_ICAs' 
 
 for directory in [dir_figs, dir_figs_montage, dir_pickle, dir_ICA]:
     directory.mkdir(exist_ok=True)
@@ -115,15 +115,12 @@ templates_path = base.parent/'Template_Files/N200template.mat'
 
 headmodel_path = base.parent/'Template_Files/eginn128hm.mat'
 
-wave_template, topo_tpl_arr = generate_templates(templates_path=templates_path,
+wave_template, template_img_arr = generate_templates(templates_path=templates_path,
                                                  headmodel_path=headmodel_path,
                                                  save_path=base) 
-                                                #! Consider adding a "blank" parameter -> see adjust_topo_template()
-
-template_img_arr = topo_tpl_arr # ! Remove this, rename appropriately before
 
 # * Array of the template topomap in DataFrame format
-df_topo_tpl = pd.DataFrame(topo_tpl_arr)
+df_topo_tpl = pd.DataFrame(template_img_arr)
 
 
 # * ################################ FUNCTIONS ################################
@@ -641,8 +638,6 @@ def multiprocessing_prepro(nb_cpus=None):
 
     if nb_cpus == None:
         nb_cpus = ProcessPoolExecutor()._max_workers - 2
-    # else:
-    #     nb_cpus = ProcessPoolExecutor()._max_workers - nb_cpus
 
     with ProcessPoolExecutor(nb_cpus) as executor:
 
@@ -654,6 +649,8 @@ def multiprocessing_prepro(nb_cpus=None):
 
 
 # * ################################## MAIN ###################################
+
+# * Analyzing participants one by one
 
 bdf_files, elp_files = load_data(dir_sessions)
 ica_files = {re.search('sess_\d{2}-\d', f.name)[0]: f for f in dir_ICA.iterdir()}
@@ -669,6 +666,7 @@ for sess in sess_names:
     
 
 
+# * Using Multiprocessing
 
 # if __name__ == '__main__':
 #     start = time.perf_counter()
