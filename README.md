@@ -48,15 +48,15 @@ and visual feedback was given after every response.
 
 <h1>Additional Figures</h1>
 <h2>Dataset 1</h2>
-![Dataset 1 - Regression Plot](Supplementary Data/Figures/Outliers Excluded/dataset 1.png)
+![Dataset 1 - Regression Plot](/Supplementary Data/Figures/Outliers Excluded/dataset 1.png)
 
 <h2>Dataset 2</h2>
-![Dataset 2 (easy condition) - Regression Plot ](Supplementary Data/Figures/Outliers Excluded/dataset 2 (Easy).png)
-![Dataset 2 (medium condition) - Regression Plot](Supplementary Data/Figures/Outliers Excluded/dataset 2 (Medium).png)
-![Dataset 2 (hard condition) - Regression Plot](Supplementary Data/Figures/Outliers Excluded/dataset 2 (Hard).png)
+![Dataset 2 (easy condition) - Regression Plot ](/Supplementary Data/Figures/Outliers Excluded/dataset 2 (Easy).png)
+![Dataset 2 (medium condition) - Regression Plot](/Supplementary Data/Figures/Outliers Excluded/dataset 2 (Medium).png)
+![Dataset 2 (hard condition) - Regression Plot](/Supplementary Data/Figures/Outliers Excluded/dataset 2 (Hard).png)
 
 <h2>Dataset 3</h2>
-![Dataset 3 - Regression Plot](Supplementary Data/Figures/Outliers Excluded/dataset 3.png)
+[Dataset 3 - Regression Plot](/Supplementary Data/Figures/Outliers Excluded/dataset 3.png)
 
 
 <h1>Dataset / Participants Information</h1>
