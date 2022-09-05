@@ -19,8 +19,9 @@ The aim of the present study was thus to further explore the findings of Nunez e
 that the peak-latency of the N200 tracks NDT in perceptual decision-making tasks. This was done by applying 
 regression analysis on three publicly available EEG datasets that fitted the selection criteria. In order to be selected,
 the datasets had to include a twoalternative forced-choice task in the visual modality with a clear stimulus onset time 
-and recordings of RT. Additionaly, an "EZ-diffusion model" was fitted with the participants' data (RT and task accuracy) 
-and the resulting NDT estimates were used in a final regression analysis. 
+and recordings of RT. Additionaly, an <a href="https://link.springer.com/article/10.3758/BF03194023">EZ-diffusion model</a> 
+was fitted with the participants' data (RT and task accuracy) and the resulting NDT estimates were used in a final regression analysis. 
+
 
 <b>Results</b>
 - Although not replicating the 1-to-1 ms relationship found in Nunez et al. (2019), the results indicate a significant positive 
