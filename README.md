@@ -22,12 +22,12 @@ the datasets had to include a twoalternative forced-choice task in the visual mo
 and recordings of RT. Additionaly, an "EZ-diffusion model" was fitted with the participants' data (RT and task accuracy) 
 and the resulting NDT estimates were used in a final regression analysis. 
 
-Results
+<b>Results</b>
 - Although not replicating the 1-to-1 ms relationship found in Nunez et al. (2019), the results indicate a significant positive 
 relationship between estimates of NDT and the peak-latency of the N200 under certain conditions
 - The regressions were especially influenced by 5 outliers and by experimental conditions in dataset 2
 
-Limitations
+<b>Limitations</b>
 - A relatively small number of participants in datasets 1 & 3
 - Five participants from dataset 1 dropped from final analysis due to missing information
 - Some of the choices that were made to increase data quality were envisioned a priori
