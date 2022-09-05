@@ -178,7 +178,9 @@ hypothesis might not hold true in all conditions:</br>
 </details>
 
 
-<h2>Additional Figures</h2>
+<h2>Supplementary Data</h2>
+<img src="Supplementary_Data/results_statistics.png" alt="Statistics" title="Statistics">  
+
 <details>
   <summary>Dataset 1</summary>
   <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset1.png" alt="Dataset1 - Regression" title="Dataset 1 - Regression Plot">  
