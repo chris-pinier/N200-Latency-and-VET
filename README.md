@@ -1,6 +1,61 @@
 <h1>Exploration of a Potential Relationship between N200 Peak-Latency and Visual Encoding Time</h1>
+
+<h2>Summary</h2>
+
+<b>Reaction time (RT)</b> is a crucial element in the study of more complex processes related to decision-making, which is
+being extensively studied by many different disciplines, such as psychology, systems neuroscience or computational
+cognitive modelling. Sequential sampling models, which have emerged from the latter, rely on the idea that perceptual
+decisions are made possible by a process of evidence accumulation and have been relatively influential on the study of
+this topic. However, RT is thought to include other cognitive processes than a sole accumulation of evidence and some
+researchers believe that it can be subdivided into component parts, each reflecting the duration of such processes. For
+example, recent evidence from <a href="https://pubmed.ncbi.nlm.nih.gov/31028925/">Nunez et al. (2019)</a> suggests a 
+positive linear relationship between the peak-latency of the <b>N200</b> event-related potential (ERP) component and <b>visual 
+encoding time (VET)</b>. The authors show that duration increases in the former led to equivalent increases in <b>non-decision
+time (NDT)</b>, an independent estimate that is thought to include VET and is derived from cognitive models of RT. On the 
+other hand, this evidence was only shown in one type of task and the authors reported that the association between the 
+N200 and VET might not hold true in all conditions, as demonstrated by a lack of a 1-to-1 ms linear relationship on single-trials.
+
+The aim of the present study was thus to further explore the findings of Nunez et al. (2019) and the hypothesis 
+that the peak-latency of the N200 tracks NDT in perceptual decision-making tasks. This was done by applying 
+regression analysis on three publicly available EEG datasets that fitted the selection criteria. In order to be selected,
+the datasets had to include a twoalternative forced-choice task in the visual modality with a clear stimulus onset time 
+and recordings of RT. Additionaly, an "EZ-diffusion model" was fitted with the participants' data (RT and task accuracy) 
+and the resulting NDT estimates were used in a final regression analysis. 
+
+Results
+- Although not replicating the 1-to-1 ms relationship found in Nunez et al. (2019), the results indicate a significant positive 
+relationship between estimates of NDT and the peak-latency of the N200 under certain conditions
+- The regressions were especially influenced by 5 outliers and by experimental conditions in dataset 2
+
+Limitations
+- A relatively small number of participants in datasets 1 & 3
+- Five participants from dataset 1 dropped from final analysis due to missing information
+- Some of the choices that were made to increase data quality were envisioned a priori
+
+<b>Keywords</b>: N200, N2, decision-making, visual encoding time, non-decision time, event-related potentials
+<details>
+  <summary>Definitions</summary>
+  
+  Visual Encoding Time (VET):</br>
+  - initial period for visual information processing  </br>
+  - thought to reflect early cognitive processes like figure-ground segregation  </br>
+  - 150-200 ms post stimulus, depending on visual noise, levels of attention </br></br>
+ 
+  Non-Decision Time (NDT):
+  - period within response time (RT) that includes cognitive processes not related to evidence accumulation in decision-making tasks
+  - an independent estimate that is thought to include VET and is derived from cognitive models of RTs </br></br>
+  
+  N200:
+  - negative Event-Related Potential (ERP) typically occurring 180-325 ms post stimulus presentation <a href="https://pubmed.ncbi.nlm.nih.gov/16239953/">(Patel & Azzam, 2005)</a> </br>
+  - thought to reflect processes associated with perception, selective attention, and cognitive control (<a href="https://pubmed.ncbi.nlm.nih.gov/17850238/">Folstein & Van Petten, 2008</a>; Patel & Azzam, 2005) </br>
+
+</details>
+
 <h2>Datasets Information</h2>
   <img src="/Supplementary_Data/Datasets_summary.png" alt="Datasets information" title="Datasets information">
+  
+<h2>Background</h2>
+  
 <h2>N200 Identification</h2>
 <details>
   <summary>Preprocessing Steps & N200 Identification</summary>
@@ -11,29 +66,29 @@
   Preprocessing of the raw EEG data for dataset 1 and 3 was performed in the following order:
   1. Average reference applied to all the electrodes 
   2. Bandpass filter (0.1-100 Hz)
-  3. Artifact removal using Independent Component analysis (ICA)
+  3. Artifact removal using Independent Component analysis (ICA) </br>
   ICA was applied to dataset 1 and 3 to remove eye movement artifacts. EOG electrodes from the third dataset
   were used to this end, but had to be simulated from EEG data in the first dataset. This was done through the
   MNE package, by creating a bipolar reference from two frontal EEG electrodes and using it as a proxy for an EOG
   electrode. Electrode “1EX4” was used as the anode and “1EX5” as the cathode.
   4. Bandpass filter (1-10 Hz)
-  5. Epoching
+  5. Epoching </br>
   Epochs were time-locked on stimulus presentation, starting 200 ms before stimulus-onset and with a total
   duration of 500 ms.
-  6. Baseline correction
+  6. Baseline correction </br>
   Baseline correction was applied to each epoch using the 200 ms period before stimulus-onset.
   7. Linear detrend
-  8. Epochs and electrodes rejection
+  8. Epochs and electrodes rejection </br>
   Any epoch containing more than 30% of its electrodes showing absolute amplitudes greater than 100 μV were
   automatically rejected. Any electrode showing absolute amplitudes greater than 100 μV in more than 20 epochs
   were automatically rejected from every epoch.
-  9. Generating the ERP
+  9. Generating the ERP </br>
   Stimulus-locked ERP were generated by averaging the EEG activity across the selected epochs.
-  10. Singular value decomposition (SVD)
+  10. Singular value decomposition (SVD) </br>
   SVD was applied to the data using Python’s Numpy library. The resulting U (Timepoints x Components) and V
   (Components x Electrodes) matrices, were respectively used to identify the waveform and spatial distribution of
   the N200 in the ERP of each participant.
-  11. Template matching
+  11. Template matching </br>
   The waveform template was reframed and resampled to match the specified N200’s time window – here, 125 to
   275ms post-stimulus – and the sampling rate used in each dataset. The topographic template was converted
   into a grayscale image (1280 x 1280 pixels) and vectorized. Both the waveform and topographic templates were
@@ -43,16 +98,16 @@
   waveform and topographic templates, respectively. The product of the two correlation coefficients was then 
   calculated for each component, and the component with the highest product was designated as reflective of a
   participant’s N200.
-  12. Estimation of NDT
+  12. Estimation of NDT</br>
   For each participant, the 10th percentile of RT was used as an estimate of NDT, as suggested by Nunez et al.
   (2019).
-  13. Linear regression analysis
+  13. Linear regression analysis</br>
   A linear regression analysis wasperformed using the open-source python module statsmodels. The analysis was first 
   conducted on each dataset independently and then on a merged version of the three datasets
 </details>
 
 
-<h2>Task Description</h2>
+<h2>Tasks Description</h2>
 
 <details>
   <summary>Dataset 1</summary>
@@ -109,7 +164,6 @@
   <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset1.png" alt="Dataset1 - Regression" title="Dataset 1 - Regression Plot">  
 </details>
 
-
 <details>
   <summary>Dataset 2</summary>
   <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset2 (Easy).png" alt="Dataset2 (easy condition) - Regression" title="Dataset 2 (easy) - Regression Plot">
@@ -121,3 +175,5 @@
   <summary>Dataset 3</summary>
   <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
 </details>
+
+<h2>Scripts Description</h2>
