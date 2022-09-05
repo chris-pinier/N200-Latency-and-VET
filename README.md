@@ -41,16 +41,16 @@ Limitations
 <details>
   <summary>Definitions</summary>
   
-  Visual Encoding Time (VET):</br>
+  Visual Encoding Time (VET)</br>
   - initial period for visual information processing  </br>
   - thought to reflect early cognitive processes like figure-ground segregation  </br>
   - 150-200 ms post stimulus, depending on visual noise, levels of attention </br></br>
  
-  Non-Decision Time (NDT):
-  - period within response time (RT) that includes cognitive processes not related to evidence accumulation in decision-making tasks
+  Non-Decision Time (NDT) </br>
+  - period within response time (RT) that includes cognitive processes not related to evidence accumulation in decision-making tasks </br>
   - an independent estimate that is thought to include VET and is derived from cognitive models of RTs </br></br>
   
-  N200:
+  N200
   - negative Event-Related Potential (ERP) typically occurring 180-325 ms post stimulus presentation <a href="https://pubmed.ncbi.nlm.nih.gov/16239953/">(Patel & Azzam, 2005)</a> </br>
   - thought to reflect processes associated with perception, selective attention, and cognitive control (<a href="https://pubmed.ncbi.nlm.nih.gov/17850238/">Folstein & Van Petten, 2008</a>; Patel & Azzam, 2005) </br>
 
@@ -58,9 +58,20 @@ Limitations
 
 <details>
 <summary>Nunez et al. (2019)</summary></br>
-  1. Response time and choice data from participants fitted to drift-diffusion models (DDM)</br>
-  2. Response time data simulated with various amounts of trial-to-trial variability in NDT and evidence accumulation rate</br>
-  3. Mean NDT across trials was well estimated by 10th percentiles of response time distributions</br>
+1. Response time and choice data from participants fitted to drift-diffusion models (DDM)</br>
+2. Response time data simulated with various amounts of trial-to-trial variability in NDT and evidence accumulation rate</br>
+3. Mean NDT across trials was well estimated by 10th percentiles of response time distributions</br></br>
+
+<b>Conclusion</b></br>
+N200 latencies:
+- vary across individuals
+- are modulated by external visual noise
+- increase by x milliseconds when response time increases by x milliseconds</br>
+
+<b>Limitations</b></br>
+hypothesis might not hold true in all conditions:</br>
+- lack of a 1-to-1 ms linear relationship on single-trials
+- supporting evidence was only shown in one type of task
 </details>
 
 <h2>N200 Identification</h2>
