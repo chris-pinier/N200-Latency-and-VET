@@ -33,6 +33,11 @@ Limitations
 - Some of the choices that were made to increase data quality were envisioned a priori
 
 <b>Keywords</b>: N200, N2, decision-making, visual encoding time, non-decision time, event-related potentials
+
+<h2>Datasets Information</h2>
+  <img src="/Supplementary_Data/Datasets_summary.png" alt="Datasets information" title="Datasets information">
+  
+<h2>Background</h2>
 <details>
   <summary>Definitions</summary>
   
@@ -51,15 +56,17 @@ Limitations
 
 </details>
 
-<h2>Datasets Information</h2>
-  <img src="/Supplementary_Data/Datasets_summary.png" alt="Datasets information" title="Datasets information">
-  
-<h2>Background</h2>
-  
+<details>
+<summary>Nunez et al. (2019)</summary></br>
+  1. Response time and choice data from participants fitted to drift-diffusion models (DDM)</br>
+  2. Response time data simulated with various amounts of trial-to-trial variability in NDT and evidence accumulation rate</br>
+  3. Mean NDT across trials was well estimated by 10th percentiles of response time distributions</br>
+</details>
+
 <h2>N200 Identification</h2>
 <details>
   <summary>Preprocessing Steps & N200 Identification</summary>
-  The EEG activity was processed with MNE, an open-source python package dedicated to the analysis of
+  The EEG activity was processed with <a href="https://mne.tools/stable/index.html">MNE</a>, an open-source python package dedicated to the analysis of
   neurophysiological data. Raw data was obtained for the first and third dataset, while the data used from the second one
   had already been preprocessed.
   
@@ -99,8 +106,7 @@ Limitations
   calculated for each component, and the component with the highest product was designated as reflective of a
   participant’s N200.
   12. Estimation of NDT</br>
-  For each participant, the 10th percentile of RT was used as an estimate of NDT, as suggested by Nunez et al.
-  (2019).
+  For each participant, the 10th percentile of RT was used as an estimate of NDT, as suggested by Nunez et al. (2019).
   13. Linear regression analysis</br>
   A linear regression analysis wasperformed using the open-source python module statsmodels. The analysis was first 
   conducted on each dataset independently and then on a merged version of the three datasets
@@ -143,7 +149,10 @@ Limitations
   - Hard: participants had to discriminate the patches based on both spatial frequency and orientation by pressing
   one of two buttons. As an example, one button corresponded to patches with both high spatial frequency and a
   45-degree orientation, while the other corresponded to patches with both low spatial frequency and an
-  orientation of 135 degrees.
+  orientation of 135 degrees.</br></br>
+  
+  <b>Due to time constraints, only the data from the first task was used in the present study.</b>
+  
 </details>
 
 <details>
@@ -176,4 +185,13 @@ Limitations
   <img src="/Supplementary_Data/Figures/Outliers_Excluded/dataset3.png" alt="Dataset3 - Regression" title="Dataset 3 - Regression Plot">
 </details>
 
+<details>
+  <summary>All Datasets combined</summary>
+  <img src="Supplementary_Data/Figures/Outliers_Excluded/All_datasets (Easy).png" alt="All Datasets (easy) - Regression" title="All Datasets (easy) - Regression Plot">
+  <img src="Supplementary_Data/Figures/Outliers_Excluded/All_datasets (Medium).png" alt="All Datasets (medium)" title="All Datasets (medium) - Regression Plot">
+  <img src="Supplementary_Data/Figures/Outliers_Excluded/All_datasets (Hard).png" alt="All Datasets (hard)" title="All Datasets (hard) - Regression Plot">
+</details>
+
 <h2>Scripts Description</h2>
+- N200_extraction.py: module containing customized functions to identify the N200 component in preprocessed ERP files (using <a href="https://mne.tools/stable/generated/mne.Evoked.html#mne-evoked">MNE's "evoked" format</a>) </br>
+- Proj1-Analysis.py: script used to preprocess and analyze the data from dataset 1 (demonstrates how the functions contained in N200_exctration.py are being used) 
