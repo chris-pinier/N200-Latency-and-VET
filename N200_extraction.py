@@ -1,21 +1,14 @@
 import matplotlib
 import matplotlib.pyplot as plt
-import itertools
 import mne
 import numpy as np
-import os
 import pickle
 import pandas as pd
 import pathlib
-from pathlib import Path
 from PIL import Image
 from pprint import pprint
 from pymatreader import read_mat
-import re
 import scipy.io
-import shutil
-from sklearn.linear_model import LinearRegression
-import warnings
 
 
 default_figsize = (12.8, 12.8)
@@ -674,5 +667,3 @@ def N200_detection(sess, evoked, dir_figs, dir_pickle, n200_window,
     pickle_export(n200_data, dir_pickle, f'{sess}-N200-DataDict')
 
     return n200_data
-
-
