@@ -15,11 +15,8 @@ import re
 import scipy.io
 import shutil
 from sklearn.linear_model import LinearRegression
-from tabulate import tabulate
 import warnings
 
-
-warnings.filterwarnings('ignore', category=DeprecationWarning)
 
 default_figsize = (12.8, 12.8)
 
@@ -227,8 +224,6 @@ def generate_templates(templates_path, headmodel_path, save_path,
 
     # * Add time points as index
     
-    # ! /!\ -> start at 0.000 or 0.001?
-    
     wave_template = pd.Series(wave_template.flatten(),
                               index=np.arange(0, wave_template.shape[0], 1))
 
@@ -334,7 +329,6 @@ def generate_templates(templates_path, headmodel_path, save_path,
     # val_counts = np.unique(template_img_arr, return_counts=True)
     # pprint( {px_val:count for px_val, count in zip(val_counts[0], val_counts[1])} )
 
-    # ! ############# rename var template_img_arr to topo_img_arr #############
 
     return wave_template, template_img_arr
 
@@ -441,9 +435,6 @@ def N200_detection(sess, evoked, dir_figs, dir_pickle, n200_window,
         corr = df_wave.corrwith(df_wave_tpl, drop=False, method='pearson')[0]
         corr = round(corr, 3)
 
-        # corr2 = df_topo.corrwith(df_topo_template, axis=1, drop=False, method='pearson').mean()
-        # corr1, corr2 = [round(x, 3) for x in [corr1, corr2]]
-
         wave_corr.append(corr)
 
     # * #######################################################################
@@ -541,9 +532,6 @@ def N200_detection(sess, evoked, dir_figs, dir_pickle, n200_window,
 
     u_comp_latency = df_u_comps.loc[picked_comp].sort_values(ascending=True).index[0]
 
-    # plt.figure()
-    # plt.plot(evoked_df_N200.index, u_comps[picked_comp])
-    # plt.plot(ch_data * (u_comps.min() / ch_data.min().min() ))
 
     if picked_comp >= 10:
         picked_chs = df_v.iloc[picked_comp - 10]\
@@ -556,16 +544,6 @@ def N200_detection(sess, evoked, dir_figs, dir_pickle, n200_window,
                                     .index[:nb_chans].to_list()
 
     ch_data = evoked_df_N200[picked_chs]
-
-    # select the {nb_chans} that contribute the most to the component
-    # picked_chs = []
-
-    # picked_chs.extend(channels)
-
-    # ch_data = evoked.to_data_frame(picks=picked_chs, time_format='ms')
-    # ch_data = ch_data.set_index('time')
-
-    # peak_ch = picked_chs[0]
 
     peak_ch = ch_data.min(axis=0).sort_values(ascending=True).index[0]
 
@@ -587,14 +565,6 @@ def N200_detection(sess, evoked, dir_figs, dir_pickle, n200_window,
                             'peak_val': peak_val},
                     'u_peak': {'latency': u_comp_latency}
                     }
-
-    # check_ch = peak_ch == evoked_df_N200.min(axis=0).sort_values().index[0]
-    # # WRONG, NEED TO REWRITE THIS: PEAK LATENCY SHOULD BE LATENCY OF peak_ch
-    # check_lat = peak_latency == evoked_df_N200.min(axis=1).sort_values().index[0]
-    # check_val = peak_val == evoked_df_N200.min().min()
-
-    # print('Checking if selected channel has lowest value and late on N200 interval')
-    # print(f'{check_ch = } | {check_lat = } | {check_val = }')
 
 
     # * 1st set of plots
@@ -706,321 +676,3 @@ def N200_detection(sess, evoked, dir_figs, dir_pickle, n200_window,
     return n200_data
 
 
-def ezdiff(rt, correct, s=1.0):
-
-    def logit(p): return np.log(p / (1 - p))
-
-    assert len(rt) > 0
-    assert len(rt) == len(correct)
-    assert np.nanmax(correct) <= 1
-    assert np.nanmin(correct) >= 0
-
-    pc = np.nanmean(correct)
-
-    assert pc > 0
-
-    # subtract or add 1/2 an error to prevent division by zero
-    if pc == 1.0:
-        pc = 1 - 1 / (2 * len(correct))
-
-    if pc == 0.5:
-        pc = 0.5 + 1 / (2 * len(correct))
-
-    MRT = np.nanmean(rt[correct == 1])
-    VRT = np.nanvar(rt[correct == 1])
-
-    assert VRT > 0
-
-    r = (logit(pc) * (((pc**2) * logit(pc)) - pc * logit(pc) + pc - 0.5)) / VRT
-
-    drift = np.sign(pc-0.5) * s * (r)**0.25
-
-    boundary = (s**2 * logit(pc)) / drift
-
-    y = (-1 * drift * boundary) / (s**2)
-
-    MDT = (boundary/(2 * drift)) * ((1 - np.exp(y))/(1 + np.exp(y)))
-
-    ndt = MRT - MDT
-
-    return([boundary, drift, ndt])
-
-    # ### Re-run DDM simulation here ###
-
-
-def select_files(directory: str, pattern: str) -> list:
-
-    if type(pattern) == str:
-        pattern = [pattern]
-
-    if type(directory) != pathlib.WindowsPath:
-        directory = pathlib.Path(directory)
-
-    selection = []
-
-    for pat in pattern:
-
-        files = [f for f in directory.iterdir() if (re.search(pat, f.name) is
-                                                    not None) & (f.is_file())]
-
-        selection.extend(files)
-
-    new_dir = directory/'Selected_Files'
-
-    new_dir.mkdir()
-
-    new_paths = [new_dir/f.name for f in selection]
-
-    for original, copy in zip(selection, new_paths):
-        shutil.copy(original, copy)
-
-
-def modify_folder(directory, action, f_type=None, contains=None, pattern=None):
-    if f_type:
-        files = [f for f in os.listdir(directory) if f.endswith('.' + f_type)]
-    else:
-        files = [f for f in directory.iterdir() if f.is_file()]
-
-    if contains:
-        search = [os.path.join(directory, f)
-                  for f in files if re.search(contains, f)]
-
-    if action == 'remove':
-        for f in files:
-            os.remove(directory/f)
-
-    # * create nested folders
-    elif action == 'pack':
-        unique = sorted(set([re.search(pattern, f.name)[0] for f in files]))
-
-        for name in unique:
-            # REPLACE str(f) by f.name
-            old_paths = [f for f in files if name in f.name]
-            for f in old_paths:
-                files.remove(f)
-
-            new_dir = directory/name
-            new_dir.mkdir()
-
-            new_paths = [new_dir/f.name for f in old_paths]
-
-            for path in zip(old_paths, new_paths):
-                path[0].replace(path[1])
-
-    # * unpack nested folders
-    elif action == 'unpack':
-        subfolders = [fold for fold in directory.iterdir()]
-        old_paths = [list(fold.iterdir()) for fold in subfolders]
-        old_paths = list(itertools.chain.from_iterable(old_paths))
-
-        new_paths = [directory/f.name for f in old_paths]
-
-        for path in zip(old_paths, new_paths):
-            path[0].replace(path[1])
-
-        for sub in subfolders:
-            sub.rmdir()
-
-    # * search file type
-    elif action == 'search':
-        # pprint(search)
-        return search
-
-
-# * ################## NOT USED / USED FOR DEBUG #####################
-
-def data_struct(data, sess, save_dir):
-    structure = [(k, type(data[sess][k])) for k in data[sess].keys()]
-    structure[-1][1] == dict
-    print(tabulate(structure))
-
-
-def generate_templates_OLD(templates_path, save_path, figsize=default_figsize, template_rad=600):
-    '''
-    - templates_path: type = ;
-    - save_path: type = ; 
-    - figsize: type = tuple; 
-    - template_rad: type = int; radius used for the head model of the 
-                    topographic maps
-
-    returns: 
-    '''
-
-    templates = read_mat(templates_path)
-
-    # WAVE TEMPLATE
-    wave_template = templates['N200wavetemplate']  # Samp. rate = 1000 Hz
-    stim_onset = 100  # milliseconds
-
-    # ## Add time points as index  /!\ -> start at 0.000 or 0.001?
-    wave_template = pd.Series(wave_template.flatten(),
-                              index=np.arange(0, wave_template.shape[0], 1))
-
-    # ## Lock on stimulus onset and reset the index
-    wave_template = wave_template.loc[stim_onset:]
-    wave_template.index -= stim_onset  # index in ms -> 0 - 999 ms
-
-    # Plotting the wave template
-    plt.figure()
-    plt.plot(wave_template)
-    plt.savefig(save_path/'template_wave.png')
-    # plt.show(block=False)
-
-    # TOPOMAP TEMPLATE
-    # [:-1] -> omit the stimulus channel
-    topo_template = templates['N200template'][:-1]
-
-    # Set up the montage
-    chanlist = [str(i) for i in range(1, 129)]
-    headmodel = save_path/'eginn128hm.mat'
-    locdic = read_mat(headmodel)['EGINN128']
-
-    locdicchan = locdic['Electrode']['CoordOnSphere'][:-1] * 0.1
-
-    chan_pos = dict(zip(chanlist, locdicchan))
-
-    nasion = chan_pos['17']
-    lpa = chan_pos['48']
-    rpa = chan_pos['113']
-
-    montage = mne.channels.make_dig_montage(ch_pos=chan_pos,
-                                            nasion=nasion,
-                                            lpa=lpa,
-                                            rpa=rpa)
-
-    montage.plot(show_names=False, show=False)  # (x, y, z, radius)
-    plt.savefig(save_path/'template_montage.png')
-
-    template_info = mne.create_info(ch_names=montage.ch_names, sfreq=1000,
-                                    ch_types='eeg')
-
-    rng = np.random.RandomState(0)
-    fake_data = rng.normal(size=(len(chanlist), 1)) * 1e-6
-
-    fake_evoked = mne.EvokedArray(fake_data, template_info)
-    fake_evoked.set_montage(montage)
-
-    template_sphere = mne.make_sphere_model(
-        r0='auto', head_radius='auto', info=fake_evoked.info)
-    r = template_sphere.radius
-    # pprint(dict(template_sphere.items()))
-
-    # Plot the topographic template
-
-    fig, ax = plt.subplots(figsize=figsize)
-
-    # img = mne.viz.plot_topomap(topo_template, fake_evoked.info,
-    #                     sensors=False, extrapolate='auto', outlines='head',
-    #                     show=False, axes=ax, res=1280, sphere=r,
-    #                     contours=6) #cmap='summer',
-    # plt.savefig(save_path/f'original_topo_template.png')
-
-    img = mne.viz.plot_topomap(topo_template, fake_evoked.info,
-                               sensors=False, extrapolate='auto', outlines=None,
-                               show=False, axes=ax, res=1280, sphere=r,
-                               cmap='summer', contours=0)
-
-    draw_circle = matplotlib.patches.Circle((0, 0), r, fill=False, lw=0,
-                                            transform=ax.transData)
-
-    ax.add_patch(draw_circle).set_alpha(0.3)
-    img[0].set_clip_path(draw_circle)
-    plt.savefig(save_path/'template_sphere.png')
-    # plt.show(block=False)
-
-    template_img = Image.open(str(save_path/'template_sphere.png'))
-    template_img_arr = np.asarray(template_img)
-
-    # template_center = (656, 601)
-    # template_rad = 496
-
-    template_img_arr = ajdust_topo_plot(template_img_arr,
-                                        template_rad=template_rad,
-                                        save_path=str(
-                                            save_path/'template_sphere.png'))
-
-    template_img = Image.open(str(save_path/'template_sphere.png')).convert('L')
-
-    # Selecting the lower half of the image (posterior region of the brain)
-    template_img_arr = np.asarray(template_img)
-
-    # Replace white pixels by NaN values and vectorize the matrix
-    template_img_arr = np.where(
-        template_img_arr == 255, np.nan, template_img_arr).flatten()
-
-    # Checking pixel values in grayscale
-    # val_counts = np.unique(template_img_arr, return_counts=True)
-    # pprint( {px_val:count for px_val, count in zip(val_counts[0], val_counts[1])} )
-
-    # rename var template_img_arr to topo_img_arr /!\
-
-    return wave_template, template_img_arr
-
-
-def show_all(df):
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        display(df)
-
-
-def reg_analysis(x, y, save_dir, show=False):
-    m, b = np.polyfit(x, y, 1)
-
-    line_equation = f'{round(m,2)}x + {round(b, 2)}'
-
-    plt.figure()
-
-    # * Data points
-    plt.plot(x, y, 'o')
-
-    # * Regression Line
-    plt.plot(x, m*x + b, label=line_equation)
-
-    plt.xlabel('N200 Latency')
-    plt.ylabel('resp. time (10th Percentile)')
-
-    plt.title('Resp. Times vs. N200 latencies')
-
-    plt.legend()
-
-    if save_dir:
-        plt.savefig(save_dir/'lin_reg.png', dpi=300)
-
-    if show:
-        plt.show(block=False)
-
-
-    x = x.reshape(len(x), 1)
-    y = y.reshape(len(y), 1)
-
-    reg = LinearRegression().fit(x, y)
-
-    score = reg.score(x, y)
-    coef = reg.coef_
-    intercept = reg.intercept_
-    # reg.predict(np.array([[3]]))
-
-    print(
-        f'{line_equation = }'
-        f'{score = }'
-        f'{coef = }'
-        f'{intercept = }'
-    )
-
-    return reg
-
-
-def tree(directory):
-
-    print(f'+ {directory}')
-
-    for path in sorted(directory.rglob('*')):
-
-        depth = len(path.relative_to(directory).parts) - 1
-        spacer = '\t' * depth
-
-        # print(f'{spacer}+ {path.name}')
-
-        if path.is_file():
-            print(f'{spacer}f {path.name}')
-        else:
-            print(f'{spacer}d {path.name}')
