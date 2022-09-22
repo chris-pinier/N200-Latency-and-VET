@@ -46,7 +46,7 @@ def make_montage(type, path):
     def custom_montage():
         chanlist = np.arange(0, 128)
 
-        headmodel = 'C:/Users/chris/Videos/EEG_data/test/eginn128hm.mat'
+        headmodel = 'Template_Files/eginn128hm.mat'
         locdic = scipy.io.loadmat(headmodel)['EGINN128']
 
         nasion_chan = 17 - 1
